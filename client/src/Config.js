@@ -1,5 +1,9 @@
 import axios from "axios";
-const apiURL = process.env.REACT_APP_NODE_API;
+const apiURL =
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+    ? process.env.REACT_APP_NODE_API
+    : "";
+console.log("API URL IN CONFIG = ", apiURL);
 
 //************USED IN HEADER*************//
 export const signOut = (next) => {
@@ -33,34 +37,7 @@ export const isActive = (history, path) => {
   }
 };
 
-//************USED IN ADMIN LIST **************//
-export const deleteMultipleGods = (godIds) => {
-  return axios.delete(apiURL + "/gods/delete_gods/" + godIds).catch((error) => {
-    console.log(error);
-  });
-};
-
-export const getAllGods = () => {
-  return axios.get(apiURL + "/gods").then((res) => {
-    return res.data;
-  });
-};
-
-//************USED IN ADD GOD **********//
-export const addGod = (godDetails) => {
-  return axios.post(apiURL + "/gods/add_god", godDetails).then((res) => {
-    return res;
-  });
-};
-
 /**************USED IN SIGNUP*********/
-export const authenticate = (data, next) => {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("jwt", JSON.stringify(data));
-    next();
-  }
-};
-
 export const signUp = (userDetails) => {
   return axios
     .post(apiURL + "/signup", userDetails)
@@ -70,6 +47,48 @@ export const signUp = (userDetails) => {
     .then((res) => {
       return res;
     });
+};
+
+export const authenticate = (data, next) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("jwt", JSON.stringify(data));
+    next();
+  }
+};
+
+/**************USED IN SIGN IN *************/
+export const signIn = (userDetails) => {
+  console.log(userDetails);
+  return axios
+    .post(apiURL + "/signin", userDetails)
+    .catch((error) => {
+      console.log(error);
+      return error.response.data;
+    })
+    .then((res) => {
+      return res;
+    });
+};
+
+//************USED IN GOD LISTS *************//
+export const getAllGods = () => {
+  return axios.get(apiURL + "/gods").then((res) => {
+    return res.data;
+  });
+};
+
+//************USED IN ADMIN LIST **************//
+export const deleteMultipleGods = (godIds) => {
+  return axios.delete(apiURL + "/gods/delete_gods/" + godIds).catch((error) => {
+    console.log(error);
+  });
+};
+
+//************USED IN ADD GOD **********//
+export const addGod = (godDetails) => {
+  return axios.post(apiURL + "/gods/add_god", godDetails).then((res) => {
+    return res;
+  });
 };
 
 /**********USED IN DELETE MODAL ******/
@@ -93,18 +112,4 @@ export const confirmEdit = async (id, details) => {
       return res;
     })
     .catch((err) => err);
-};
-
-/**************USED IN SIGN IN *************/
-export const signIn = (userDetails) => {
-  console.log(userDetails);
-  return axios
-    .post(apiURL + "/signin", userDetails)
-    .catch((error) => {
-      console.log(error);
-      return error.response.data;
-    })
-    .then((res) => {
-      return res;
-    });
 };

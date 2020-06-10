@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    textAlign: "center",
   },
 
   card: {
@@ -35,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     fontFamily: "arial",
+  },
+  description: {
+    maxHeight: "30vh",
+    overflowY: "scroll",
+    textAlign: "justify",
   },
 }));
 
@@ -86,10 +92,14 @@ function GodDeleteModal({
             alt={modalGod && modalGod.name}
           />
           <h2 id="simple-modal-title">{modalGod && modalGod.name}</h2>
-          <p id="simple-modal-description">
+          <p id="simple-modal-description" className={classes.description}>
             {modalGod && modalGod.description}
           </p>
-          <Button variant="contained" onClick={handleClose}>
+          <Button
+            style={{ float: "left" }}
+            variant="contained"
+            onClick={handleClose}
+          >
             <CancelIcon /> Cancel
           </Button>
 

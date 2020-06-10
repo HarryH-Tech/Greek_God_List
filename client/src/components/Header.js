@@ -56,7 +56,7 @@ function Header({ history, location }) {
             <>
               <Button
                 color="inherit"
-                style={isActive(history, "/signin")}
+                style={isActive(history, "/")}
                 onClick={() =>
                   signOut(() => {
                     history.push("/");

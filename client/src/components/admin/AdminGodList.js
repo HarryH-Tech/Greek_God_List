@@ -21,7 +21,7 @@ import { deleteMultipleGods, getAllGods } from "../../Config";
 
 const useStyles = makeStyles((theme) => ({
   media: {
-    height: 200,
+    height: 250,
   },
   card: {
     textAlign: "center",
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
   gridItem: {
     margin: "0.6rem auto",
+    width: "30%",
   },
   listContainer: {
     textAlign: "center",
@@ -58,16 +59,10 @@ function GodList(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    getAllGods()
-      .then((res) => {
-        console.log(res);
-        setGodData(res);
-      })
-      .then(
-        godData.forEach((el) => {
-          el.checked = "false;";
-        })
-      );
+    getAllGods().then((res) => {
+      console.log(res);
+      setGodData(res);
+    });
   }, []);
 
   const handleOpen = (god) => {

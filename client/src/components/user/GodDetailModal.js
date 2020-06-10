@@ -2,6 +2,8 @@ import React from "react";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 
+import "../../App.css";
+
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +25,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     fontFamily: "arial",
+    maxWidth: "40%",
+    margin: "auto",
   },
   godDescription: {
+    maxHeight: "25vh",
     textAlign: "justify",
-    overflowY: "hidden",
+    overflowY: "scroll",
   },
 }));
 
@@ -41,6 +46,7 @@ function GodDetailModal({ modalGod, open, handleClose }) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         className={classes.modal}
+        id="modal"
       >
         <div className={classes.paper}>
           <img

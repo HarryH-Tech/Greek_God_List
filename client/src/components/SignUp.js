@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { signUp } from "../Config";
 
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { isAuthenticated } from "../Config";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -151,8 +152,19 @@ const SignUp = () => {
 
   const classes = useStyles();
 
+  console.log(isAuthenticated());
+
+  const redirectUser = () => {
+    if (isAuthenticated() && isAuthenticated().data.user.role === 0) {
+      return <Redirect to="/user_god_list" />;
+    } else if (isAuthenticated() && isAuthenticated().data.user.role === 1) {
+      return <Redirect to="/admin_god_list" />;
+    }
+  };
+
   return (
     <div className={classes.body}>
+      {redirectUser()}
       <Grid container justify="center">
         <div className={classes.container}>
           <h3>

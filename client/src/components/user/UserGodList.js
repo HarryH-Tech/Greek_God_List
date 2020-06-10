@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -79,10 +79,6 @@ function GodList(props) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   const user = isAuthenticated().data.user;
-
-  console.log(user);
-
-  console.log(user.id, user._id);
 
   return (
     <div className="list-container">

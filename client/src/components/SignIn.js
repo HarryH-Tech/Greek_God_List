@@ -135,11 +135,18 @@ const SignIn = () => {
   };
 
   const redirectUser = () => {
-    if (redirectToReferrer) {
-      if (user && user.role === 1) {
-        return <Redirect to="/user_god_list" />;
-      } else {
+    if (redirectToReferrer || isAuthenticated()) {
+      console.log(user);
+      if (
+        isAuthenticated().data.user &&
+        isAuthenticated().data.user.role === 1
+      ) {
         return <Redirect to="/admin_god_list" />;
+      } else if (
+        isAuthenticated().data.user &&
+        isAuthenticated().data.user.role === 0
+      ) {
+        return <Redirect to="/user_god_list" />;
       }
     }
   };
