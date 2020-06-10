@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { confirmEdit, getAllGods } from "../../../Config";
 
 import TextField from "@material-ui/core/TextField";
 import CheckIcon from "@material-ui/icons/Check";
 import CancelIcon from "@material-ui/icons/Cancel";
-
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -43,7 +42,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EditGodModal({ setMessage, modalGod, open, handleClose }) {
+function EditGodModal({
+  setGodData,
+  godData,
+  setMessage,
+  modalGod,
+  open,
+  handleClose,
+}) {
   const [godDetails, setGodDetails] = useState({
     name: modalGod.name,
     description: modalGod.description,
@@ -63,20 +69,15 @@ function EditGodModal({ setMessage, modalGod, open, handleClose }) {
     setGodDetails({ ...godDetails, [e.target.name]: e.target.value });
   }
 
-  const confirmEdit = async () => {
-    await axios
-      .put("http://localhost:4000/gods/update_god/" + modalGod._id, godDetails)
-      .then(
-        setAppDetails({ message: `${name} has been successfully edited. 😊` })
-      )
-      .catch(
-        (err) => console.log(err),
-        setAppDetails({
-          error: `Sorry. There was a problem adding ${name} has been added to the database. 😢 <br />Please try again.`,
-        })
-      );
+  const editGod = (id, details) => {
+    confirmEdit(id, details).then((res) => console.log(res));
+    handleClose();
+    getAllGods().then((res) => {
+      console.log(res);
+      setGodData(res);
+    });
 
-    window.location.reload();
+    setMessage(`${name} successfully edited.`);
   };
 
   return (
@@ -138,7 +139,7 @@ function EditGodModal({ setMessage, modalGod, open, handleClose }) {
             <Button
               style={{ backgroundColor: "#44ff99", float: "right" }}
               variant="contained"
-              onClick={confirmEdit}
+              onClick={() => editGod(modalGod._id, godDetails)}
             >
               <CheckIcon /> Confirm Changes
             </Button>

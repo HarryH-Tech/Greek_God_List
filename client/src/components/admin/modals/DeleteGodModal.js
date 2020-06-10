@@ -9,7 +9,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
-import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { deleteGod, getAllGods } from "../../../Config";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -37,32 +38,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GodDeleteModal({ setMessage, modalGod, open, handleClose }) {
+function GodDeleteModal({
+  setGodData,
+  godData,
+  setMessage,
+  modalGod,
+  open,
+  handleClose,
+}) {
   const classes = useStyles();
 
-  const handleDelete = () => {
-    const message = (
-      <Typography component="div" variant="body1">
-        <Box bgcolor="secondary.main" color="secondary.contrastText">
-          {modalGod.name} deleted successfully. 😊
-        </Box>
-      </Typography>
-    );
-    setMessage(message);
-    handleClose();
+  const handleDelete = (id) => {
+    try {
+      deleteGod(id);
+      const message = (
+        <Typography component="div" variant="body1">
+          <Box bgcolor="secondary.main" color="secondary.contrastText">
+            {modalGod.name} deleted successfully. 😊
+          </Box>
+        </Typography>
+      );
+      handleClose();
+      getAllGods().then((res) => {
+        console.log(res);
+        setGodData(res);
+      });
+
+      setMessage(`${modalGod.name} successfully deleted.`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const deleteGod = () => {
-    axios
-      .delete("http://localhost:4000/gods/delete_god/" + modalGod._id)
-      .then((res) => console.log("DELETED" + res.data))
-      .then(handleDelete())
-      .catch((error) => {
-        console.log(error);
-      });
-    window.location.reload();
-  };
-  console.log(modalGod);
   return (
     <>
       <Modal
@@ -90,7 +97,7 @@ function GodDeleteModal({ setMessage, modalGod, open, handleClose }) {
             style={{ float: "right" }}
             variant="contained"
             color="secondary"
-            onClick={deleteGod}
+            onClick={() => handleDelete(modalGod._id)}
           >
             <DeleteIcon /> Delete God
           </Button>
@@ -100,4 +107,4 @@ function GodDeleteModal({ setMessage, modalGod, open, handleClose }) {
   );
 }
 
-export default GodDeleteModal;
+export default withRouter(GodDeleteModal);

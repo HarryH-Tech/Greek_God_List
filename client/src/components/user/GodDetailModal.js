@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   godDescription: {
     textAlign: "justify",
+    overflowY: "hidden",
   },
 }));
 

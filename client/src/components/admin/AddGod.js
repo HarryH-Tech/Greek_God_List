@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { addGod } from "../../Config";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  form: {
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
       width: "25ch",
     },
   },
-  wrapper: {
+  container: {
     width: "50ch",
     margin: "1rem auto",
     textAlign: "center",
@@ -34,13 +34,20 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "bold",
     },
   },
+  linkWrapper: {
+    textAlign: "center",
+  },
+  pageContainer: {
+    position: "relative",
+    minHeight: "100vh",
+  },
 }));
 
 export default function AddGod() {
   const [godDetails, setGodDetails] = useState({
-    name: "",
-    description: "",
-    image: "",
+    name: "bob  ",
+    description: "iii",
+    image: "iii",
   });
 
   const [appDetails, setAppDetails] = useState({
@@ -56,38 +63,40 @@ export default function AddGod() {
     setGodDetails({ ...godDetails, [e.target.name]: e.target.value });
   }
 
-  function validateGodDetails() {
+  const validateGodDetails = (name, description, image) => {
     if (!name || !description || !image) {
-      console.log("error2");
-      setAppDetails({ error: "Please ensure all fields are filled out." });
       return false;
     } else {
       return true;
     }
-  }
+  };
 
-  function onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault();
-    console.log(godDetails);
-    if (validateGodDetails()) {
-      axios
-        .post("http://localhost:4000/gods/add_god", godDetails)
-
-        .catch(
-          (err) => console.log(err),
+    if (validateGodDetails(name, description, image)) {
+      addGod(godDetails).then((data) => {
+        if (data.error) {
           setAppDetails({
             error: `Sorry. There was a problem adding ${name} has been added to the database. 😢 <br />Please try again.`,
-          })
-        );
-      setAppDetails({ message: `${name} has been added to the database. 😊` });
-      setGodDetails({ name: "", description: "", image: "" });
+          });
+        } else {
+          setAppDetails({
+            message: `${name} has been added to the database. 😊`,
+          });
+          setGodDetails({ name: "ii", description: "pp", image: "uuu" });
+        }
+      });
+    } else {
+      setAppDetails({
+        error: `Please ensure all fields are filled out.`,
+      });
     }
-  }
+  };
 
   return (
-    <>
-      <div style={{ textAlign: "center" }}>
-        <Link to="/list" style={{ textDecoration: "none" }}>
+    <div className={classes.pageContainer}>
+      <div className={classes.linkWrapper}>
+        <Link to="/admin_god_list" style={{ textDecoration: "none" }}>
           <Button
             variant="contained"
             color="secondary"
@@ -108,8 +117,8 @@ export default function AddGod() {
         </Alert>
       )}
 
-      <div className={classes.wrapper}>
-        <form className={classes.root} noValidate autoComplete="off">
+      <div className={classes.container}>
+        <form className={classes.form} noValidate autoComplete="off">
           <div>
             <TextField
               required
@@ -158,6 +167,6 @@ export default function AddGod() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.list-container {
+  background-image: url("https://c.wallhere.com/photos/5f/03/mythology_Zeus_Greek_mythology_God_Poseidon-1293041.jpg!d");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+}

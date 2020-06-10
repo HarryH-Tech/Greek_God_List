@@ -1,23 +1,8 @@
-let mongoose = require("mongoose"),
-  express = require("express"),
-  router = express.Router();
+const godSchema = require("../models/God");
+const mongoose = require("mongoose");
 
-// God Model
-let godSchema = require("../models/God");
-
-//Create God
-router.route("/add_god").post((req, res, next) => {
-  godSchema.create(req.body, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
-});
-
-//Read Gods
-router.route("/").get((req, res, next) => {
+//View All Gods
+exports.getAllGods = (req, res, next) => {
   godSchema.find((error, data) => {
     if (error) {
       return next(error);
@@ -25,22 +10,21 @@ router.route("/").get((req, res, next) => {
       res.json(data);
     }
   });
-});
+};
 
-// Get Single God
-// router.route("/edit-student/:id").get((req, res, next) => {
-//   godSchema.findById(req.params.id, (error, data) => {
-//     if (error) {
-//       return next(error);
-//     } else {
-//       res.json(data);
-//     }
-//   });
-// });
+//Create God
+exports.createGod = (req, res, next) => {
+  godSchema.create(req.body, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      res.json(data);
+    }
+  });
+};
 
-// Update God Details
-router.route("/update_god/:id").put((req, res, next) => {
-  console.log(req.params.id);
+//Update God Details
+exports.updateGod = (req, res, next) => {
   godSchema.findByIdAndUpdate(
     req.params.id,
     {
@@ -55,15 +39,13 @@ router.route("/update_god/:id").put((req, res, next) => {
       }
     }
   );
-});
+};
 
 //Delete many gods
-router.route("/delete_gods/:id").delete((req, res, next) => {
-  // convert string passed into
-  // function into an array of strings
+exports.deleteManyGods = (req, res, next) => {
+  // convert string passed into function into an array of strings
   // eg - "el,el,el" into ["el", "el", "el"]
   const idList = req.params.id.split(",");
-
   godSchema.deleteMany(
     { _id: { $in: idList.map(mongoose.Types.ObjectId) } },
     (error, data) => {
@@ -76,10 +58,11 @@ router.route("/delete_gods/:id").delete((req, res, next) => {
       }
     }
   );
-});
+};
 
-// Delete Specific God
-router.route("/delete_god/:id").delete((req, res, next) => {
+// // Delete Specific God
+exports.deleteGod = (req, res, next) => {
+  console.log("GOD ID =", req.params.id);
   godSchema.findByIdAndRemove(req.params.id, (error, data) => {
     if (error) {
       return next(error);
@@ -89,6 +72,4 @@ router.route("/delete_god/:id").delete((req, res, next) => {
       });
     }
   });
-});
-
-module.exports = router;
+};

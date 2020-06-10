@@ -1,22 +1,40 @@
 import React from "react";
 
-import GodList from "./components/GodList";
+import SignUp from "./components/SignUp";
+import SignIn from "./components/SignIn";
+import AdminGodList from "./components/admin/AdminGodList";
 import Header from "./components/Header";
-import AddGod from "./components/AddGod";
+import Footer from "./components/Footer";
+import AddGod from "./components/admin/AddGod";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import UserGodList from "./components/user/UserGodList";
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter,
+} from "react-router-dom";
+import PrivateRoute from "./custom_routes/PrivateRoute";
+import AdminRoute from "./custom_routes/AdminRoute";
+
+import "./App.css";
+
+const HeaderWithRouter = withRouter(({ location }) => <Header />);
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Router>
-        <Switch>
-          <Route exact path="/list" component={GodList} />
-          <Route exact path="/add_god" component={AddGod} />
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <HeaderWithRouter />
+      <Switch>
+        <Route exact path="/" component={SignIn} />
+        <Route exact path="/signup" component={SignUp} />
+        <AdminRoute exact path="/admin_god_list" component={AdminGodList} />
+        <AdminRoute exact path="/add_god" component={AddGod} />
+        <PrivateRoute exact path="/user_god_list" component={UserGodList} />
+      </Switch>
+      <Footer />
+    </Router>
   );
 }
 

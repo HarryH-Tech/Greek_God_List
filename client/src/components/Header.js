@@ -1,4 +1,8 @@
 import React from "react";
+import { Link, withRouter } from "react-router-dom";
+
+import { isAuthenticated, signOut, isActive } from "../Config";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -10,36 +14,63 @@ import MenuIcon from "@material-ui/icons/Menu";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "0px !important",
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  navbar: {
+    backgroundColor: "#4477ff",
   },
   title: {
     flexGrow: 1,
   },
+  button: {
+    textDecoration: "none",
+    color: "#fff !important",
+  },
 }));
 
-export default function Header() {
+function Header({ history, location }) {
   const classes = useStyles();
+  console.log(location.pathname);
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.navbar}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            Greek Gods List
           </Typography>
-          <Button color="inherit">Login</Button>
+
+          {!isAuthenticated() ? (
+            <Button>
+              {location.pathname === "/signup" ? (
+                <Link to="/" className={classes.button}>
+                  Sign In
+                </Link>
+              ) : (
+                <Link to="/signup" className={classes.button}>
+                  Sign Up
+                </Link>
+              )}
+            </Button>
+          ) : (
+            <>
+              <Button
+                color="inherit"
+                style={isActive(history, "/signin")}
+                onClick={() =>
+                  signOut(() => {
+                    history.push("/");
+                  })
+                }
+              >
+                Sign Out
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+export default withRouter(Header);

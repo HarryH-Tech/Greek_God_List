@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,10 +11,13 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CreateIcon from "@material-ui/icons/Create";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Alert } from "@material-ui/lab";
 
-import GodDetailModal from "./modals/GodDetailModal";
+import GodDetailModal from "../user/GodDetailModal";
 import DeleteGodModal from "./modals/DeleteGodModal";
 import EditGodModal from "./modals/EditGodModal";
+
+import { deleteMultipleGods, getAllGods } from "../../Config";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -27,14 +29,22 @@ const useStyles = makeStyles((theme) => ({
   },
 
   gridItem: {
-    margin: "0.2rem auto",
+    margin: "0.6rem auto",
+  },
+  listContainer: {
+    textAlign: "center",
+    backgroundImage:
+      "url('https://indianfolk.com/wp-content/uploads/2020/03/rubens-phaeton-1.1920x0.jpg')",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
   },
 }));
 
 function GodList(props) {
-  //State to control which god appears in the modal
+  // Control which god appears in the modal
   const [modalGod, setModalGod] = useState(null);
 
+  //Control which modal opens
   const [openGodDetailModal, setOpenGodDetailModal] = useState(false);
   const [openDeleteGodModal, setOpenDeleteGodModal] = useState(false);
   const [openEditGodModal, setOpenEditGodModal] = useState(false);
@@ -43,23 +53,21 @@ function GodList(props) {
   const [message, setMessage] = useState("");
 
   const [checked, setChecked] = useState(false);
-  const classes = useStyles();
-
   const [godIds, setGodIds] = useState([]);
 
-  const getAllGods = () => {
-    axios
-      .get("http://localhost:4000/gods")
-      .then((res) => setGodData(res.data))
+  const classes = useStyles();
+
+  useEffect(() => {
+    getAllGods()
+      .then((res) => {
+        console.log(res);
+        setGodData(res);
+      })
       .then(
         godData.forEach((el) => {
           el.checked = "false;";
         })
       );
-  };
-
-  useEffect(() => {
-    getAllGods();
   }, []);
 
   const handleOpen = (god) => {
@@ -77,7 +85,6 @@ function GodList(props) {
   };
 
   const editGod = (god) => {
-    console.log(godIds);
     setOpenEditGodModal(true);
     setModalGod(god);
   };
@@ -85,33 +92,36 @@ function GodList(props) {
   const handleSelectItemChange = (event, god) => {
     god.__v = !god.__v;
     setChecked(!checked);
-
     var index = godIds.indexOf(god._id);
     if (index > -1) {
       godIds.splice(index, 1);
     } else {
       godIds.push(god._id);
     }
-
     console.log(godIds);
   };
 
-  const deleteMultipleGods = () => {
-    console.log(godIds);
-    axios
-      .delete("http://localhost:4000/gods/delete_gods/" + godIds)
-      .then((res) => console.log("DELETED" + res.data))
-      .then(getAllGods())
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleDeleteMultipleGods = (ids) => {
+    deleteMultipleGods(ids);
+    getAllGods().then((res) => {
+      console.log(res);
+      setGodData(res);
+    });
+
+    setMessage("Gods Deleted");
+    setGodIds([]);
   };
 
+  console.log(message);
   return (
-    <>
-      <div style={{ textAlign: "center", margin: "0.6rem " }}>
+    <div className={classes.listContainer}>
+      <div>
         <Link to="/add_god" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="primary">
+          <Button
+            style={{ marginTop: "0.5rem" }}
+            variant="contained"
+            color="primary"
+          >
             Add God
           </Button>
         </Link>
@@ -121,12 +131,18 @@ function GodList(props) {
           <Button
             variant="contained"
             color="secondary"
-            onClick={deleteMultipleGods}
+            onClick={() => handleDeleteMultipleGods(godIds)}
           >
             Delete Gods
           </Button>
         )}
-        {message && message}
+        <br />
+        <br />
+        {message && (
+          <Alert severity="success" className={classes.alert}>
+            <div>{message}</div>
+          </Alert>
+        )}
       </div>
 
       <Grid container xs={12}>
@@ -136,12 +152,10 @@ function GodList(props) {
               <Grid className={classes.gridItem}>
                 <Card key={god.id} className={classes.card}>
                   <Checkbox
-                    // key={god.__v}
                     checked={Boolean(god.__v)}
                     onChange={(event) => handleSelectItemChange(event, god)}
                     inputProps={{ "aria-label": "primary checkbox" }}
                     value={god._id}
-                    // style={{ float: "left" }}
                   />
                   <CardMedia
                     image={god.image}
@@ -189,6 +203,8 @@ function GodList(props) {
             handleClose={() => setOpenDeleteGodModal(false)}
             modalGod={modalGod}
             setMessage={setMessage}
+            setGodData={setGodData}
+            godData={godData}
           />
         )}
         {openEditGodModal && (
@@ -197,10 +213,12 @@ function GodList(props) {
             handleClose={() => setOpenEditGodModal(false)}
             modalGod={modalGod}
             setMessage={setMessage}
+            setGodData={setGodData}
+            godData={godData}
           />
         )}
       </Grid>
-    </>
+    </div>
   );
 }
 
