@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -8,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
 
 import GodDetailModal from "./GodDetailModal";
 import { isAuthenticated, getAllGods } from "../../Config";
@@ -29,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   gridItem: {
-    margin: "0.2rem auto",
+    margin: "0.6rem auto",
+    width: "30%",
   },
   heading: {
     textAlign: "center",
@@ -43,9 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GodList(props) {
-  const [redirect, setRedirect] = useState(false);
-
+function UserGodList(props) {
   // Control which god appears in the modal
   const [modalGod, setModalGod] = useState(null);
 
@@ -53,9 +50,6 @@ function GodList(props) {
   const [openGodDetailModal, setOpenGodDetailModal] = useState(false);
 
   const [godData, setGodData] = useState([]);
-  const [message, setMessage] = useState("");
-
-  const [godIds, setGodIds] = useState([]);
 
   const classes = useStyles();
 
@@ -131,4 +125,4 @@ function GodList(props) {
   );
 }
 
-export default GodList;
+export default UserGodList;

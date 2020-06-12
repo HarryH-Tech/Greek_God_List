@@ -55,13 +55,7 @@ function EditGodModal({
     image: modalGod.image,
   });
 
-  const [appDetails, setAppDetails] = useState({
-    message: "",
-    error: "",
-  });
-
   const { name, description, image } = godDetails;
-  const { message, error } = appDetails;
   const classes = useStyles();
 
   function onChange(e) {

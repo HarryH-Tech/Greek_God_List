@@ -213,7 +213,7 @@ const SignIn = () => {
               variant="contained"
               className={classes.button}
               onClick={onSubmit}
-              value="Submit"
+              type="submit"
             >
               Sign In
             </Button>

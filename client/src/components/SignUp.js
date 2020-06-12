@@ -13,7 +13,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import EmailIcon from "@material-ui/icons/Email";
 
@@ -266,6 +265,7 @@ const SignUp = () => {
               variant="contained"
               className={classes.button}
               onClick={handleSignUp}
+              type="submit"
             >
               Sign Up
             </Button>
