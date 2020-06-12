@@ -1,10 +1,9 @@
 import React, { useState } from "react";
+import { confirmEdit, getAllGods } from "../../../Config";
 
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { confirmEdit, getAllGods } from "../../../Config";
-
 import TextField from "@material-ui/core/TextField";
 import CheckIcon from "@material-ui/icons/Check";
 import CancelIcon from "@material-ui/icons/Cancel";

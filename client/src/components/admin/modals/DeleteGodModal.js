@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-
-import Modal from "@material-ui/core/Modal";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CancelIcon from "@material-ui/icons/Cancel";
-
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import React from "react";
 
 import { withRouter } from "react-router-dom";
 import { deleteGod, getAllGods } from "../../../Config";
+
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CancelIcon from "@material-ui/icons/Cancel";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -57,16 +54,9 @@ function GodDeleteModal({
   const handleDelete = (id) => {
     try {
       deleteGod(id);
-      const message = (
-        <Typography component="div" variant="body1">
-          <Box bgcolor="secondary.main" color="secondary.contrastText">
-            {modalGod.name} deleted successfully. 😊
-          </Box>
-        </Typography>
-      );
+
       handleClose();
       getAllGods().then((res) => {
-        console.log(res);
         setGodData(res);
       });
 

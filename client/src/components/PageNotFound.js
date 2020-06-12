@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { isAuthenticated } from "../Config";
 
 function PageNotFound() {
-  console.log("HI");
   const redirectUser = () => {
     console.log(isAuthenticated().data);
     if (isAuthenticated().data.user.role === 0) {

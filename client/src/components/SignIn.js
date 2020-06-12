@@ -9,11 +9,9 @@ import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import EmailIcon from "@material-ui/icons/Email";
 
@@ -136,7 +134,7 @@ const SignIn = () => {
 
   const redirectUser = () => {
     if (redirectToReferrer || isAuthenticated()) {
-      console.log(user);
+      console.log(isAuthenticated().data);
       if (
         isAuthenticated().data.user &&
         isAuthenticated().data.user.role === 1

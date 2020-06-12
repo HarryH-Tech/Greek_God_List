@@ -4,7 +4,6 @@ import { addGod } from "../../Config";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import { Alert } from "@material-ui/lab";
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    width: "50ch",
+    width: "70%",
     margin: "1rem auto",
     textAlign: "center",
     border: "0.1rem solid #4477ff",

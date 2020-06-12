@@ -3,17 +3,15 @@ const apiURL =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
     ? process.env.REACT_APP_NODE_API
     : "";
-console.log("API URL IN CONFIG = ", apiURL);
+
+//    console.log("API URL IN CONFIG = ", apiURL);
 
 //************USED IN HEADER*************//
 export const signOut = (next) => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("jwt");
     next();
-    return axios
-      .get(apiURL + "/signout")
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    return axios.get(apiURL + "/signout");
   }
 };
 
@@ -26,14 +24,6 @@ export const isAuthenticated = () => {
     return JSON.parse(localStorage.getItem("jwt"));
   } else {
     return false;
-  }
-};
-
-export const isActive = (history, path) => {
-  if (history.location.pathname === path) {
-    return { color: "#44ff77" };
-  } else {
-    return { color: "#fff" };
   }
 };
 
@@ -62,7 +52,6 @@ export const signIn = (userDetails) => {
   return axios
     .post(apiURL + "/signin", userDetails)
     .catch((error) => {
-      console.log(error);
       return error.response.data;
     })
     .then((res) => {
@@ -79,9 +68,7 @@ export const getAllGods = () => {
 
 //************USED IN ADMIN LIST **************//
 export const deleteMultipleGods = (godIds) => {
-  return axios.delete(apiURL + "/gods/delete_gods/" + godIds).catch((error) => {
-    console.log(error);
-  });
+  return axios.delete(apiURL + "/gods/delete_gods/" + godIds);
 };
 
 //************USED IN ADD GOD **********//
@@ -94,14 +81,7 @@ export const addGod = (godDetails) => {
 /**********USED IN DELETE MODAL ******/
 export const deleteGod = (id) => {
   console.log(id);
-  return axios
-    .delete(apiURL + "/gods/delete_god/" + id)
-    .then((res) => {
-      console.log("DELETED" + res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  return axios.delete(apiURL + "/gods/delete_god/" + id);
 };
 
 /**********USED IN EDIT MODAL ******/

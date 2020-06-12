@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import GodDetailModal from "../user/GodDetailModal";
+import DeleteGodModal from "./modals/DeleteGodModal";
+import EditGodModal from "./modals/EditGodModal";
+
+import { deleteMultipleGods, getAllGods } from "../../Config";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -12,12 +18,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CreateIcon from "@material-ui/icons/Create";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Alert } from "@material-ui/lab";
-
-import GodDetailModal from "../user/GodDetailModal";
-import DeleteGodModal from "./modals/DeleteGodModal";
-import EditGodModal from "./modals/EditGodModal";
-
-import { deleteMultipleGods, getAllGods } from "../../Config";
 
 const useStyles = makeStyles((theme) => ({
   media: {
