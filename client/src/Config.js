@@ -2,7 +2,7 @@ import axios from "axios";
 const apiURL =
   !process.env.NODE_ENV || process.env.NODE_ENV === "development"
     ? process.env.REACT_APP_NODE_API
-    : "";
+    : "/api";
 
 //    console.log("API URL IN CONFIG = ", apiURL);
 
@@ -52,6 +52,7 @@ export const signIn = (userDetails) => {
   return axios
     .post(apiURL + "/signin", userDetails)
     .catch((error) => {
+      console.log(error);
       return error.response.data;
     })
     .then((res) => {
